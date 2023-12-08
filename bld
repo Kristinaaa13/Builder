@@ -1,0 +1,73 @@
+from abc import ABC, abstractmethod
+
+# Абстрактний клас для продукту
+class Product:
+    def __init__(self):
+        self.parts = []
+
+    def add_part(self, part):
+        self.parts.append(part)
+
+    def show(self):
+        print("Product parts:", ", ".join(self.parts))
+
+# Абстрактний будівельник
+class Builder(ABC):
+    @abstractmethod
+    def build_part_a(self):
+        pass
+
+    @abstractmethod
+    def build_part_b(self):
+        pass
+
+    @abstractmethod
+    def get_result(self) -> Product:
+        pass
+
+# Конкретний будівельник для продукту типу A
+class ConcreteBuilderA(Builder):
+    def __init__(self):
+        self.product = Product()
+
+    def build_part_a(self):
+        self.product.add_part("PartA_A")
+
+    def build_part_b(self):
+        self.product.add_part("PartB_A")
+
+    def get_result(self) -> Product:
+        return self.product
+
+# Конкретний будівельник для продукту типу B
+class ConcreteBuilderB(Builder):
+    def __init__(self):
+        self.product = Product()
+
+    def build_part_a(self):
+        self.product.add_part("PartA_B")
+
+    def build_part_b(self):
+        self.product.add_part("PartB_B")
+
+    def get_result(self) -> Product:
+        return self.product
+
+# Директор, який визначає порядок будівництва
+class Director:
+    def construct(self, builder: Builder):
+        builder.build_part_a()
+        builder.build_part_b()
+
+# Використання
+builder_a = ConcreteBuilderA()
+director_a = Director()
+director_a.construct(builder_a)
+product_a = builder_a.get_result()
+product_a.show()
+
+builder_b = ConcreteBuilderB()
+director_b = Director()
+director_b.construct(builder_b)
+product_b = builder_b.get_result()
+product_b.show()
